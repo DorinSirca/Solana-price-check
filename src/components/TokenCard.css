@@ -237,6 +237,14 @@
   font-weight: 500;
 }
 
+.address-text.clickable {
+  cursor: pointer;
+}
+
+.address-text.clickable:hover {
+  opacity: 0.8;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .token-card {

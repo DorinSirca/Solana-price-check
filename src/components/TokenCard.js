@@ -164,7 +164,11 @@ const TokenCard = ({ token, index }) => {
       {/* Address */}
       <div className="address-section">
         <span className="address-label">Contract:</span>
-        <span className="address-text">
+        <span 
+          className="address-text clickable"
+          onClick={openInExplorer}
+          title="View on Solscan"
+        >
           {token.address.slice(0, 8)}...{token.address.slice(-8)}
         </span>
       </div>
