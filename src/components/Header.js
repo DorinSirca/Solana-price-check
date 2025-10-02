@@ -2,7 +2,7 @@ import React from 'react';
 import { TrendingUp, RefreshCw } from 'lucide-react';
 import './Header.css';
 
-const Header = () => {
+const Header = ({ isRefreshing }) => {
   return (
     <header className="header glass-strong">
       <div className="header-content">
@@ -18,8 +18,8 @@ const Header = () => {
         
         <div className="header-right">
           <div className="refresh-indicator">
-            <RefreshCw className="refresh-icon" />
-            <span>Auto-refresh: 30s</span>
+            <RefreshCw className={`refresh-icon ${isRefreshing ? 'spinning' : ''}`} />
+            <span>{isRefreshing ? 'Refreshing...' : 'Auto-refresh: 30s'}</span>
           </div>
         </div>
       </div>

@@ -11,26 +11,35 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const loadTokens = async (isAutoRefresh = false) => {
+    try {
+      // Only show full loading state on initial load, not on auto-refresh
+      if (!isAutoRefresh) {
+        setLoading(true);
+      } else {
+        setIsRefreshing(true);
+      }
+      
+      const tokenData = await fetchSolanaTokens();
+      setTokens(tokenData);
+      setFilteredTokens(tokenData);
+      setError(null); // Clear any previous errors
+    } catch (err) {
+      setError('Failed to fetch token data. Please try again later.');
+      console.error('Error fetching tokens:', err);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    const loadTokens = async () => {
-      try {
-        setLoading(true);
-        const tokenData = await fetchSolanaTokens();
-        setTokens(tokenData);
-        setFilteredTokens(tokenData);
-      } catch (err) {
-        setError('Failed to fetch token data. Please try again later.');
-        console.error('Error fetching tokens:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTokens();
+    loadTokens(false); // Initial load
     
     // Refresh data every 30 seconds
-    const interval = setInterval(loadTokens, 30000);
+    const interval = setInterval(() => loadTokens(true), 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -55,7 +64,7 @@ function App() {
     <div className="app">
       <div className="background-animation"></div>
       <div className="app-content">
-        <Header />
+        <Header isRefreshing={isRefreshing} />
         <SearchBar onSearch={handleSearch} />
         
         {loading && (
@@ -70,7 +79,7 @@ function App() {
             <p>{error}</p>
             <button 
               className="retry-button"
-              onClick={() => window.location.reload()}
+              onClick={() => loadTokens(false)}
             >
               Retry
             </button>

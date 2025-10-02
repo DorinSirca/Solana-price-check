@@ -68,7 +68,11 @@
 .refresh-icon {
   width: 14px;
   height: 14px;
-  animation: spin 2s linear infinite;
+  transition: transform 0.3s ease;
+}
+
+.refresh-icon.spinning {
+  animation: spin 1s linear infinite;
 }
 
 @keyframes slideInDown {
