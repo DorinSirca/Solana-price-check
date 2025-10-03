@@ -35,7 +35,7 @@ cd "Solana-price-check"
 npm install
 ```
 
-### Run (recommended)
+### Run (recommended) local
 
 ```bash
 npm start
